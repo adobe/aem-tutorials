@@ -1,0 +1,27 @@
+{
+  "name": "OS Submission Process",
+  "version": "1.0.0",
+  "description": "Open Source Submission Process",
+  "author": "Simon MacDonald",
+  "view_type": "mdbook",
+  "meta_keywords": "adobe, open source",
+  "meta_description": "default description",
+  "publish_date": "30/08/2018",
+  "show_edit_github_banner": false,
+  "base_path": "https://raw.githubusercontent.com",
+  "pages": [
+    {
+      "importedFileName": "readme",
+      "pages": [
+        {
+          "importedFileName": "approving",
+          "pages": [],
+          "path": "OpenSourceAdvisoryBoard/opensource_submission_process/master/APPROVING.md",
+          "title": "Approving"
+        }
+      ],
+      "path": "OpenSourceAdvisoryBoard/opensource_submission_process/master/README.md",
+      "title": "Submission Process"
+    }
+  ]
+}
