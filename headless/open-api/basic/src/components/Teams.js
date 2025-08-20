@@ -73,40 +73,50 @@ function Teams() {
 }
 
 /**
-* Team component - renders a single team with its details and members
-* @param {string} fields - The authorable fields
-* @param {Object} references - Hydrated references containing member details such as fullName
-*/
-function Team({ fields, references }) {
+   * Team - renders a single team with its details and members
+   * @param {Object} fields - The authored Content Fragment fields
+   * @param {Object} references - Hydrated references containing member details such as fullName
+   * @param {string} path - Path of the team content fragment
+   */
+function Team({ fields, references, path }) {
   if (!fields.title || !fields.teamMembers) {
     return null;
   }
 
   return (
-    <div className="team">
-      <h2 className="team__title">{fields.title}</h2>
-      {/* Render description as HTML using dangerouslySetInnerHTML */}
-      <p
-        className="team__description"
-        dangerouslySetInnerHTML={{ __html: fields.description.value }}
-      />
-      <div>
-        <h4 className="team__members-title">Members</h4>
-        <ul className="team__members">
-          {/* Render each team member as a link to their detail page */}
-          {fields.teamMembers.map((teamMember, index) => {
-            return (
-              <li key={index} className="team__member">
-                <Link to={`/person/${teamMember}`}>
-                  {/* Display the full name from the hydrated reference */}
-                  {references[teamMember].value.fields.fullName}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+    <>
+      {/* Specify the correct Content Fragment variations path suffix in the data-aue-resource attribute */}
+      <div className="team"
+        data-aue-resource={`urn:aemconnection:${path}/jcr:content/data/master`}
+        data-aue-type="component"
+        data-aue-label={fields.title}>
+
+        <h2 className="team__title"
+          data-aue-prop="title"
+          data-aue-type="text"
+          data-aue-label="Team Title">{fields.title}</h2>
+        <p className="team__description"
+          data-aue-prop="description"
+          data-aue-type="richtext"
+          data-aue-label="Team Description"
+          dangerouslySetInnerHTML={{ __html: fields.description.value }}
+        />
+        <div>
+          <h4 className="team__members-title">Members</h4>
+          <ul className="team__members">
+            {fields.teamMembers.map((teamMember, index) => {
+              return (
+                <li key={index} className="team__member">
+                  <Link to={`/person/${teamMember}`}>
+                    {references[teamMember].value.fields.fullName}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

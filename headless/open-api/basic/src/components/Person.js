@@ -16,20 +16,12 @@ import { useParams } from "react-router-dom";
 * Fetches person data from AEM using the ID from the URL parameters
 */
 function Person() {
-  // Get the person ID from the URL parameter
   const { id } = useParams();
-
-  // State to store the person data
   const [person, setPerson] = useState(null);
 
   useEffect(() => {
-    /**
-    * Fetches person data from AEM Content Fragment Delivery API
-    * Uses the ID from URL parameters to get the specific person's details
-    */
     const fetchData = async () => {
       try {
-        /* Hydrate references for access to profilePicture asset path */
         const response = await fetch(
           `${process.env.REACT_APP_HOST_URI}/adobe/contentFragments/${id}?references=direct-hydrated`
         );
@@ -40,22 +32,25 @@ function Person() {
       }
     };
     fetchData();
-  }, [id]); // Re-fetch when ID changes
+  }, [id]);
 
-  // Show loading state while person data is being fetched
   if (!person) {
     return <div>Loading person...</div>;
   }
 
+  /* Add the Universal Editor data-aue-* attirbutes to the rendered HTML */
   return (
-    <div className="person">
-      {/* Person profile image - Look up the profilePicture reference in the references object */}
-      <img
-        className="person__image"
+    <div className="person"
+      data-aue-resource={`urn:aemconnection:${person.path}/jcr:content/data/master`}
+      data-aue-type="component"
+      data-aue-label={person.fields.fullName}>
+      <img className="person__image"
         src={process.env.REACT_APP_HOST_URI + person.references[person.fields.profilePicture].value.path}
         alt={person.fields.fullName}
+        data-aue-prop="profilePicture"
+        data-aue-type="media"
+        data-aue-label="Profile Picture"
       />
-      {/* Display person's occupations */}
       <div className="person__occupations">
         {person.fields.occupation.map((occupation, index) => {
           return (
@@ -66,12 +61,17 @@ function Person() {
         })}
       </div>
 
-      {/* Person's main content: name and biography */}
       <div className="person__content">
-        <h1 className="person__full-name">{person.fields.fullName}</h1>
-        {/* Render biography as HTML content */}
-        <div
-          className="person__biography"
+        <h1 className="person__full-name"
+          data-aue-prop="fullName"
+          data-aue-type="text"
+          data-aue-label="Full Name">
+          {person.fields.fullName}
+        </h1>
+        <div className="person__biography"
+          data-aue-prop="biographyText"
+          data-aue-type="richtext"
+          data-aue-label="Biography"
           dangerouslySetInnerHTML={{ __html: person.fields.biographyText.value }}
         />
       </div>

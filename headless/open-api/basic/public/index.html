@@ -20,7 +20,12 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <!-- Google Fonts -->
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Asar&display=swap" rel="stylesheet"/>
-        
+      
+
+    <!-- Universal Editor meta tags and CORS script -->
+    <meta name="urn:adobe:aue:system:aemconnection" content="aem:%REACT_APP_AEM_AUTHOR_HOST_URI%" />
+    <script src="https://universal-editor-service.adobe.io/cors.js"></script>
+
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
